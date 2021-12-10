@@ -10,8 +10,9 @@ class ques extends StatefulWidget {
 }
 
 class _quesState extends State<ques> {
-  List<Icon> _scoreTracker = [];
+
   int _questionIndex = 0;
+  int _flag=0;
   int _totalScore = 0;
   bool choice = false;
  void _after(String score) {
@@ -30,7 +31,7 @@ class _quesState extends State<ques> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children:  [
             Text(
-              '${_questionIndex.toString()}/${_questions.length}',
+              '${(_questionIndex+1).toString()}/${_questions.length}',
               style: TextStyle(
                 fontSize: 30,
                 fontFamily: 'Sch',
@@ -98,34 +99,38 @@ class _quesState extends State<ques> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        if(_questionIndex!=0)
-                       { _questionIndex--;
-                        choice= false;
-                        if(_totalScore>0)
-                        _totalScore-=2;
-                      }});
-                    },
-                    icon: Icon(Icons.arrow_back_ios_outlined)),
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        if(_questionIndex< _questions.length-1) {
-                          _questionIndex++;
-                          choice = false;
-                        }else {
-                          _questionIndex = 0;
-                          _totalScore=0;
-                          choice = false;
-                        }
-                      });
-                    },
-                    icon: Icon(Icons.arrow_forward_ios_outlined)),
+
+                Container(
+                  child: _flag== 1 ?
+                  Text('Final Score = ${_totalScore.toString()}',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontFamily: 'Sch',
+                    ),)
+                      : Container(
+                    padding: EdgeInsets.only(bottom: 20),
+                        child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            if(_questionIndex< _questions.length-1) {
+                              if(choice== true)
+                              {_questionIndex++;
+                              choice = false;
+                            }}
+                            else{
+                              _flag=1;
+                            }
+                          });
+                        },
+                        icon: Icon(Icons.arrow_forward,
+                        size: 40,)),
+                      ),
+
+                ),
+
               ],
             ),
-            SizedBox(height: 15,),
+            //SizedBox(height: 15,),
             Container(
               color: Colors.transparent,
               child: Row(
@@ -141,6 +146,8 @@ class _quesState extends State<ques> {
               ],
             ),
             ),
+
+
           ],
         ),
       ),
@@ -159,7 +166,7 @@ final _questions = const [
     ],
   },
   {
-    'question': 'Q2. When was flutter\'s first version lauched ?',
+    'question': 'Q2. When was flutter\'s first version launched ?',
     'answers': [
       {'answerText': 'May 2018', 'score': false},
       {'answerText': 'May 2019', 'score': false},
@@ -172,6 +179,8 @@ final _questions = const [
     'answers': [
       {'answerText': 'Yes', 'score': false},
       {'answerText': 'No', 'score': true},
+      {'answerText': 'Not Sure', 'score': false},
+      {'answerText': 'Probably', 'score': false},
     ],
   },
   {
